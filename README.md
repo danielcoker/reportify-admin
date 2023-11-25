@@ -9,6 +9,7 @@ Reportify admin dashboard.
 - Resolve reports
 
 ## Installation
+
 ```
 # Clone this repository
 git clone https://github.com/danielcoker/reportify-admin.git
@@ -27,3 +28,7 @@ pnpm dev
 # Install Husky
 npx husky install
 ```
+
+## Preview
+
+![Preview](https://reportify-admin.vercel.app/)
