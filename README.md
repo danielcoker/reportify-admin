@@ -31,4 +31,4 @@ npx husky install
 
 ## Preview
 
-![Preview](https://reportify-admin.vercel.app/)
+[Preview](https://reportify-admin.vercel.app/)
