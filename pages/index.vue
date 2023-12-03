@@ -6,7 +6,10 @@ import {
   type DatatableData,
   TwButton,
   TwDatatableServer,
+  useToast,
 } from "vue3-tailwind";
+
+import { getCurrentInstance } from 'vue';
 
 import { useCustomFetch } from "~/composables/useCustomFetch";
 import { useAuthStore } from "~/store/auth";
@@ -15,8 +18,15 @@ useHead({
   title: "Dashboard | Reportify Admin",
 });
 
+const toast = useToast();
+const componentKey = ref(0);
 const StoreAuth = useAuthStore();
 const { userInfo }: any = storeToRefs(StoreAuth);
+const resolveBtnDisabled = ref(false);
+
+const forceRerender = () => {
+  componentKey.value += 1;
+};
 
 const dataTableOpts = {
   column: [
@@ -93,6 +103,35 @@ const fetchData = async () => {
     totalData: responseData["count"],
   };
 };
+
+const resolveReport = async (id: string) => {
+  resolveBtnDisabled.value = true;
+
+  try {
+    const { data, error, refresh }: any = await useCustomFetch(
+      `/reports/${id}/resolve`,
+      {
+        method: "POST",
+      }
+    );
+
+    if (data.value) {
+      toast.success({
+        message: "Report has been resolved successfully.",
+        lifetime: 2000,
+      });
+    }
+
+    forceRerender();
+  } catch (error) {
+    toast.error({
+      message: "Something went wrong.",
+      lifetime: 2000,
+    });
+  }
+
+  resolveBtnDisabled.value = false;
+};
 </script>
 
 <template>
@@ -108,6 +147,7 @@ const fetchData = async () => {
       v-model:offset="localData.offset"
       :column="localData.column"
       :setting="localData.setting"
+      :key=componentKey
     >
       <template #row="{ column, data }">
         <template v-if="column.field === 'description'">
@@ -117,15 +157,20 @@ const fetchData = async () => {
           {{ data.category.name }}
         </template>
         <template v-if="column.field === 'status'">
-          {{ data.status }}
+          <span class="capitalize">{{ data.status }}</span>
         </template>
         <template v-if="column.field === 'location'">
-          {{ data.location }}
+          <span class="capitalize">{{ data.location }}</span>
         </template>
 
         <template v-if="column.field === 'action'">
           <div class="flex gap-2 justify-center">
-            <TwButton variant="success" class="border border-gray-900">
+            <TwButton
+              @click="resolveReport(data.id)"
+              :disabled="resolveBtnDisabled"
+              variant="success"
+              class="border border-gray-900"
+            >
               Resolve
             </TwButton>
           </div>
@@ -133,7 +178,7 @@ const fetchData = async () => {
       </template>
 
       <template #empty>
-        <div class="bg-white dark:bg-gray-800 text-center w-full">No Data</div>
+        <div class="bg-white dark:bg-gray-800 text-center w-full">No {{ userInfo.admin_category.name }} reports.</div>
       </template>
     </TwDatatableServer>
   </div>
