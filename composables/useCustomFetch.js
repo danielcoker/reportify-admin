@@ -7,6 +7,10 @@ export const useCustomFetch = (request, opts) => {
   const StoreAuth = useAuthStore();
   const { accessToken } = storeToRefs(StoreAuth);
 
+  const excludedURLs = [
+    "/users/auth/sign-in"
+  ]
+
   return useFetch(request, {
     baseURL: config.public.API_BASE_URL,
     key: JSON.stringify((Math.random() * 11223).toString()),
@@ -14,7 +18,7 @@ export const useCustomFetch = (request, opts) => {
       // Set the request headers
       options.headers = options.headers || {};
 
-      if (accessToken.value) {
+      if (!excludedURLs.includes(request) && accessToken.value) {
         options.headers["authorization"] = `Bearer ${accessToken.value}`;
       }
     },
