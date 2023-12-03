@@ -9,8 +9,6 @@ import {
   useToast,
 } from "vue3-tailwind";
 
-import { getCurrentInstance } from 'vue';
-
 import { useCustomFetch } from "~/composables/useCustomFetch";
 import { useAuthStore } from "~/store/auth";
 
@@ -170,15 +168,27 @@ const resolveReport = async (id: string) => {
               :disabled="resolveBtnDisabled"
               variant="success"
               class="border border-gray-900"
+              v-if="data.status !== 'resolved'"
             >
               Resolve
+            </TwButton>
+          </div>
+          <div class="flex gap-2 justify-center">
+            <TwButton
+              :disabled="true"
+              variant="success"
+              class="border border-gray-900"
+              v-if="data.status === 'resolved'"
+            >
+              Resolved
             </TwButton>
           </div>
         </template>
       </template>
 
       <template #empty>
-        <div class="bg-white dark:bg-gray-800 text-center w-full">No {{ userInfo.admin_category.name }} reports.</div>
+        <div class="bg-white dark:bg-gray-800 text-center w-full" v-if="componentKey === 0">No {{ userInfo.admin_category.name }} reports.</div>
+        <div class="bg-white dark:bg-gray-800 text-center w-full" v-if="componentKey > 0">Please wait...</div>
       </template>
     </TwDatatableServer>
   </div>
