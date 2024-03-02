@@ -46,12 +46,12 @@ const dataTableOpts = {
       width: "400px",
       sortable: false,
     },
-    {
-      label: "Location",
-      field: "location",
-      width: "400px",
-      sortable: false,
-    },
+    // {
+    //   label: "Location",
+    //   field: "location",
+    //   width: "400px",
+    //   sortable: false,
+    // },
     {
       label: "Action",
       field: "action",
@@ -157,9 +157,9 @@ const resolveReport = async (id: string) => {
         <template v-if="column.field === 'status'">
           <span class="capitalize">{{ data.status }}</span>
         </template>
-        <template v-if="column.field === 'location'">
+        <!-- <template v-if="column.field === 'location'">
           <span class="capitalize">{{ data.location }}</span>
-        </template>
+        </template> -->
 
         <template v-if="column.field === 'action'">
           <div class="flex gap-2 justify-center">
