@@ -130,6 +130,11 @@ const resolveReport = async (id: string) => {
 
   resolveBtnDisabled.value = false;
 };
+
+const getGoogleMapsURL = (lat: string, lng: string) => {
+  return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+};
+
 </script>
 
 <template>
@@ -158,7 +163,7 @@ const resolveReport = async (id: string) => {
           <span class="capitalize">{{ data.status }}</span>
         </template>
         <template v-if="column.field === 'location'">
-          <span class="capitalize">{{ data.location }}</span>
+          <span class="capitalize"><a :href="getGoogleMapsURL(data.latitude, data.longitude)">{{ data.location }}</a></span>
         </template>
 
         <template v-if="column.field === 'action'">
