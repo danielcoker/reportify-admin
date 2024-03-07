@@ -134,7 +134,6 @@ const resolveReport = async (id: string) => {
 const getGoogleMapsURL = (lat: string, lng: string) => {
   return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
 };
-
 </script>
 
 <template>
@@ -150,7 +149,7 @@ const getGoogleMapsURL = (lat: string, lng: string) => {
       v-model:offset="localData.offset"
       :column="localData.column"
       :setting="localData.setting"
-      :key=componentKey
+      :key="componentKey"
     >
       <template #row="{ column, data }">
         <template v-if="column.field === 'description'">
@@ -163,7 +162,14 @@ const getGoogleMapsURL = (lat: string, lng: string) => {
           <span class="capitalize">{{ data.status }}</span>
         </template>
         <template v-if="column.field === 'location'">
-          <span class="capitalize"><a :href="getGoogleMapsURL(data.latitude, data.longitude)" target="_blank">{{ data.location }}</a></span>
+          <span class="capitalize">
+            <a
+              :href="getGoogleMapsURL(data.latitude, data.longitude)"
+              target="_blank"
+              style="text-decoration: underline;"
+              >{{ data.location }}</a
+            ></span
+          >
         </template>
 
         <template v-if="column.field === 'action'">
@@ -192,8 +198,18 @@ const getGoogleMapsURL = (lat: string, lng: string) => {
       </template>
 
       <template #empty>
-        <div class="bg-white dark:bg-gray-800 text-center w-full" v-if="componentKey === 0">No {{ userInfo.admin_category.name }} reports.</div>
-        <div class="bg-white dark:bg-gray-800 text-center w-full" v-if="componentKey > 0">Please wait...</div>
+        <div
+          class="bg-white dark:bg-gray-800 text-center w-full"
+          v-if="componentKey === 0"
+        >
+          No {{ userInfo.admin_category.name }} reports.
+        </div>
+        <div
+          class="bg-white dark:bg-gray-800 text-center w-full"
+          v-if="componentKey > 0"
+        >
+          Please wait...
+        </div>
       </template>
     </TwDatatableServer>
   </div>
