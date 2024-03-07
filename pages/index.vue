@@ -163,7 +163,7 @@ const getGoogleMapsURL = (lat: string, lng: string) => {
           <span class="capitalize">{{ data.status }}</span>
         </template>
         <template v-if="column.field === 'location'">
-          <span class="capitalize"><a :href="getGoogleMapsURL(data.latitude, data.longitude)">{{ data.location }}</a></span>
+          <span class="capitalize"><a :href="getGoogleMapsURL(data.latitude, data.longitude)" target="_blank">{{ data.location }}</a></span>
         </template>
 
         <template v-if="column.field === 'action'">
